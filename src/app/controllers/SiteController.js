@@ -1,6 +1,4 @@
-
 class SiteController {
-
     // [GET] /home
     index(req, res) {
         res.render('home');
@@ -13,8 +11,8 @@ class SiteController {
 
     // [POST] /searchInput
     searchPOST(req, res) {
-        res.send(req.body.searchInput)
+        res.send(req.body.searchInput);
     }
 }
 
-module.exports = new SiteController;
+module.exports = new SiteController();
