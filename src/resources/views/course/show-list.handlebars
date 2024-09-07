@@ -1,0 +1,85 @@
+<h1>List Courses</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Image Link</th>
+            <th scope="col">Created At</th>
+            <th scope="col" colspan="2">Updated At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each course}}
+        <tr>
+            {{!-- Sử dụng helpers function sum để thực hiện logic trong handlebars --}}
+            <th scope="row">{{sum @index 1}}</th>
+            <td>{{this.name}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.image}}</td>
+            <td>{{this.createdAt}}</td>
+            <td>{{this.updatedAt}}</td>
+            <td>
+                <button type="button" id="btn-delete-course" class="btn btn-danger" data-toggle="modal"
+                    data-target="#deleteModal" data-id="{{this._id}}">
+                    Delete
+                </button>
+                <a href="/courses/{{this._id}}/edit" type="button" class="btn btn-primary mt-3">
+                    Edit
+                </a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<!-- Modal confirm delete course -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete Course</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                You sure delete this course?...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="yes-delete">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let idCourse;
+
+        $('#deleteModal').on('show.bs.modal', function (event) {
+
+            // lấy ra id là thuộc tính data-id trong <button> delete
+            let button = $(event.relatedTarget);
+            idCourse = button.data('id');
+        });
+
+        // Call API delete
+        let btnYesDelete = document.getElementById('yes-delete');
+        btnYesDelete.onclick = function () {
+            fetch(`/courses/${idCourse}`, {
+                method: 'DELETE',
+                body: null,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(() => { location.reload() })
+                .catch((error) => { console.log(error) });
+        };
+    });
+</script>

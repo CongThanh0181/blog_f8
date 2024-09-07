@@ -1,0 +1,17 @@
+<h2>Edit Course Form Page</h2>
+
+<form id="editCourseFrom" class="mt-5 mb-5" method="post" action="/courses/{{course._id}}?_method=PUT">
+    <div class="form-group">
+        <label for="nameCourse">Name Course</label>
+        <input type="text" class="form-control" id="nameCourse" name="name" value="{{course.name}}">
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea type="text" class="form-control" id="description" name="description">{{course.description}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="imageUrl">Image URL</label>
+        <input type="text" class="form-control" id="imageUrl" name="image" value="{{course.image}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Save Course</button>
+</form>
