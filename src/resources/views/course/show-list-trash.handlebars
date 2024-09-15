@@ -1,6 +1,6 @@
-<h1>List Courses</h1>
+<h1>Trash Courses</h1>
 <div>
-    <a href="/courses/list-trash">Trash ({{deletedCount}})</a>
+    <a href="/courses/list">List Courses</a>
 </div>
 
 <table class="table">
@@ -15,6 +15,7 @@
         </tr>
     </thead>
     <tbody>
+        {{!-- Sử dụng vòng lặp --}}
         {{#each course}}
         <tr>
             {{!-- Sử dụng helpers function sum để thực hiện logic trong handlebars --}}
@@ -29,8 +30,8 @@
                     data-target="#deleteModal" data-id="{{this._id}}">
                     Delete
                 </button>
-                <a href="/courses/{{this._id}}/edit" type="button" class="btn btn-primary mt-3">
-                    Edit
+                <a href="#" type="button" class="btn btn-primary mt-3 btn-restore" data-id="{{this._id}}">
+                    Restore
                 </a>
             </td>
         </tr>
@@ -43,13 +44,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete Course</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete Forever Course</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                You sure delete this course?...
+                You sure Delete Forever this course?...
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="yes-delete">Yes</button>
@@ -71,10 +72,10 @@
             idCourse = button.data('id');
         });
 
-        // Call API delete
+        // Call API delete forever
         let btnYesDelete = document.getElementById('yes-delete');
         btnYesDelete.onclick = function () {
-            fetch(`/courses/${idCourse}`, {
+            fetch(`/courses/${idCourse}/force`, {
                 method: 'DELETE',
                 body: null,
                 headers: {
@@ -84,5 +85,22 @@
                 .then(() => { location.reload() })
                 .catch((error) => { console.log(error) });
         };
+
+        // Call API restore course, Phải dùng jquery ở đây để kp sử dụng vòng lặp, do có nhiều btn-restore
+        let btnRestore = $('.btn-restore');
+        btnRestore.on('click', function (e) {
+            e.preventDefault;
+            idCourse = e.target.getAttribute('data-id');
+
+            fetch(`/courses/${idCourse}/restore`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(() => { location.reload() })
+                .catch((error) => { console.log(error) });
+        });
+
     });
 </script>

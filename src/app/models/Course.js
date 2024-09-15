@@ -11,13 +11,12 @@ const Course = new Schema({
     timestamps: true,
 });
 
-// Add plugin soft delete
-Course.plugin(mongooseDelete);
-
-// Course.plugin(mongooseDelete, {
-//     deletedAt: true,
-//     overrideMethods: "all",
-// });
+// Add plugin Soft delete (https://www.npmjs.com/package/mongoose-delete)
+// Course.plugin(mongooseDelete);
+Course.plugin(mongooseDelete, {
+    deletedAt: true,
+    overrideMethods: true,
+});
 
 module.exports = mongoose.model('Course', Course);
 
